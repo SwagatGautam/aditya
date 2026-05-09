@@ -1,374 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Aditya is Coming Home 🍺</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --green-deep:  #0d1f12;
-      --green-dark:  #142a18;
-      --green-mid:   #1e3d24;
-      --green-light: #2d5c35;
-      --amber:       #e8a020;
-      --amber-warm:  #f0b840;
-      --amber-pale:  #fad070;
-      --hop-green:   #4a7a3a;
-      --cream:       #f5eedc;
+      --bg:         #0b1c0f;
+      --bg2:        #0f2414;
+      --green:      #163b1c;
+      --green2:     #1f4f27;
+      --gold:       #c9940a;
+      --gold2:      #e8b020;
+      --gold3:      #f5cc50;
+      --gold-pale:  #fce98a;
+      --cream:      #f8f0d8;
+      --cream2:     #ede0b8;
+      --red-accent: #8b2020;
     }
 
     html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      background: var(--green-deep);
+      width:100%; height:100%; overflow:hidden;
+      background: var(--bg);
       font-family: 'Cormorant Garamond', Georgia, serif;
       color: var(--cream);
       cursor: default;
       user-select: none;
     }
 
-    /* ── Background ── */
+    /* ─── deep green bg with vignette ─── */
     .bg {
-      position: fixed; inset: 0; z-index: 0;
+      position:fixed; inset:0; z-index:0;
       background:
-        radial-gradient(ellipse 90% 50% at 50% 0%,   #1e3d24 0%, transparent 60%),
-        radial-gradient(ellipse 50% 60% at 5%  50%,   #142a18 0%, transparent 50%),
-        radial-gradient(ellipse 50% 60% at 95% 50%,   #142a18 0%, transparent 50%),
-        radial-gradient(ellipse 80% 40% at 50% 100%,  #0a1a0d 0%, transparent 55%),
-        linear-gradient(170deg, #0d1f12 0%, #112218 40%, #0d1a10 100%);
+        radial-gradient(ellipse 100% 60% at 50% 0%,   #1f4f27 0%, transparent 55%),
+        radial-gradient(ellipse 60%  80% at 0%   50%,  #122018 0%, transparent 45%),
+        radial-gradient(ellipse 60%  80% at 100% 50%,  #122018 0%, transparent 45%),
+        radial-gradient(ellipse 100% 50% at 50% 100%,  #060f08 0%, transparent 60%),
+        linear-gradient(180deg, #0b1c0f 0%, #0f2414 50%, #091508 100%);
     }
 
-    /* ── Grain overlay ── */
-    .grain {
-      position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 160px;
+    /* ─── subtle noise ─── */
+    .noise {
+      position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:140px;
     }
 
-    /* ── Outer frame like a label ── */
-    .frame {
-      position: fixed; inset: 14px; z-index: 2; pointer-events: none;
-      border: 1px solid rgba(232,160,32,0.2);
-      border-radius: 3px;
+    /* ─── OUTER LABEL BORDER (double rule like the can) ─── */
+    .border-outer {
+      position:fixed; inset:10px; z-index:2; pointer-events:none;
+      border:2px solid var(--gold);
+      border-radius:2px;
     }
-    .frame::before {
-      content: '';
-      position: absolute; inset: 5px;
-      border: 1px solid rgba(232,160,32,0.07);
+    .border-inner {
+      position:fixed; inset:16px; z-index:2; pointer-events:none;
+      border:1px solid rgba(201,148,10,0.4);
+      border-radius:1px;
     }
 
-    /* corner marks */
-    .corner {
-      position: fixed; z-index: 3; pointer-events: none;
-      width: 24px; height: 24px;
-      border-color: rgba(232,160,32,0.5);
-      border-style: solid;
+    /* corner diamonds */
+    .diamond {
+      position:fixed; z-index:3; pointer-events:none;
+      width:12px; height:12px;
+      background:var(--gold);
+      transform:rotate(45deg);
     }
-    .corner.tl { top:14px; left:14px;  border-width: 2px 0 0 2px; }
-    .corner.tr { top:14px; right:14px; border-width: 2px 2px 0 0; }
-    .corner.bl { bottom:14px; left:14px;  border-width: 0 0 2px 2px; }
-    .corner.br { bottom:14px; right:14px; border-width: 0 2px 2px 0; }
+    .diamond.tl { top:4px;  left:4px;  }
+    .diamond.tr { top:4px;  right:4px; }
+    .diamond.bl { bottom:4px; left:4px; }
+    .diamond.br { bottom:4px; right:4px;}
 
-    /* ── Hop side decorations ── */
-    .hops-left, .hops-right {
-      position: fixed; z-index: 4; pointer-events: none;
-      opacity: 0.13; bottom: 8vh;
+    /* ─── BEER CAN side decorations ─── */
+    .side-cans {
+      position:fixed; z-index:4; pointer-events:none;
+      display:flex; flex-direction:column; gap:28px;
+      align-items:center;
     }
-    .hops-left  { left: -20px; transform: rotate(-18deg); }
-    .hops-right { right: -20px; transform: rotate(18deg) scaleX(-1); }
+    .side-cans.left  { left:28px;  top:50%; transform:translateY(-50%); }
+    .side-cans.right { right:28px; top:50%; transform:translateY(-50%); }
 
-    /* ── Bubbles ── */
-    .bubbles { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+    .mini-can {
+      position:relative;
+      width:44px; height:70px;
+      animation: floatCan 4s ease-in-out infinite;
+      opacity:.82;
+    }
+    .mini-can:nth-child(2) { animation-delay:0.8s; }
+    .mini-can:nth-child(3) { animation-delay:1.6s; }
+    @keyframes floatCan {
+      0%,100%{ transform: translateY(0)   rotate(-2deg); }
+      50%    { transform: translateY(-8px) rotate(2deg);  }
+    }
+
+    /* ─── CHEERS row ─── */
+    .cheers-row {
+      position:fixed; bottom:22px; left:0; right:0; z-index:4;
+      display:flex; justify-content:center; align-items:flex-end;
+      gap:clamp(6px,2vw,18px); pointer-events:none;
+    }
+    .cheer-glass {
+      animation: cheer var(--cd,3s) ease-in-out infinite var(--cdelay,0s);
+      opacity:.7;
+      font-size:clamp(1.2rem,3vw,2rem);
+      transform-origin:bottom center;
+    }
+    @keyframes cheer {
+      0%,100%{ transform: rotate(0deg) translateY(0); }
+      25%    { transform: rotate(-12deg) translateY(-4px); }
+      50%    { transform: rotate(0deg)  translateY(-6px); }
+      75%    { transform: rotate(12deg) translateY(-4px); }
+    }
+
+    /* ─── BUBBLES ─── */
+    .bubbles { position:fixed; inset:0; z-index:5; pointer-events:none; overflow:hidden; }
     .bubble {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(232,160,32,0.22);
-      background: radial-gradient(circle at 35% 30%, rgba(250,208,112,0.1), transparent 70%);
-      animation: rise var(--rd,12s) ease-in infinite var(--rdelay,0s);
-      opacity: 0;
+      position:absolute; border-radius:50%;
+      border:1px solid rgba(201,148,10,.25);
+      background:radial-gradient(circle at 33% 28%, rgba(245,204,80,.12), transparent 65%);
+      animation: rise var(--rd,10s) ease-in infinite var(--rdelay,0s);
+      opacity:0;
     }
     @keyframes rise {
-      0%   { opacity:0;   transform: translateY(0)      scale(1); }
-      8%   { opacity:0.7; }
-      85%  { opacity:0.2; }
-      100% { opacity:0;   transform: translateY(-108vh) scale(0.4); }
+      0%  { opacity:0;   transform:translateY(0)       scale(1);   }
+      6%  { opacity:.75; }
+      88% { opacity:.15; }
+      100%{ opacity:0;   transform:translateY(-106vh)  scale(.4);  }
     }
 
-    /* ── Content ── */
+    /* ─── MAIN CONTENT ─── */
     .content {
-      position: fixed; inset: 0; z-index: 20;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 2rem; gap: 0;
+      position:fixed; inset:0; z-index:20;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:1.5rem 120px; /* room for side cans */
+      gap:0;
     }
 
-    /* badge ornament */
-    .badge {
-      display: flex; align-items: center; gap: 0.8rem;
-      margin-bottom: 1.2rem;
-      animation: fadeD 1s ease both 0.1s; opacity: 0;
+    /* ─ top rule with "EST" ─ */
+    .top-rule {
+      display:flex; align-items:center; gap:.9rem;
+      margin-bottom:.9rem;
+      animation:fadeD .9s ease both .1s; opacity:0;
     }
-    .badge-line { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--amber)); }
-    .badge-line.r { background: linear-gradient(90deg, var(--amber), transparent); }
-    .badge-icon { font-size: 1rem; filter: drop-shadow(0 0 5px var(--amber)); }
-
-    .brand-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(0.52rem, 1.15vw, 0.65rem);
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 0.5rem;
-      animation: fadeD 1s ease both 0.3s; opacity: 0;
+    .rule-line { flex:1; height:1px; max-width:80px; background:linear-gradient(90deg,transparent,var(--gold)); }
+    .rule-line.r { background:linear-gradient(90deg,var(--gold),transparent); }
+    .rule-text {
+      font-family:'DM Mono',monospace;
+      font-size:clamp(.42rem,.9vw,.55rem);
+      letter-spacing:.35em; text-transform:uppercase;
+      color:var(--gold2);
     }
 
+    /* ─ BRAND NAME in Fraktur like the can ─ */
+    .brand-name {
+      font-family:'UnifrakturMaguntia', cursive;
+      font-size:clamp(1.6rem,5vw,3.8rem);
+      color:var(--gold2);
+      text-shadow: 0 0 30px rgba(201,148,10,.5), 0 0 60px rgba(201,148,10,.2);
+      letter-spacing:.04em;
+      margin-bottom:.1rem;
+      animation:fadeD .9s ease both .25s; opacity:0;
+    }
+
+    /* ─ CRAFT PILSNER BIER subtitle ─ */
+    .bier-label {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(.55rem,1.5vw,.85rem);
+      font-weight:400; letter-spacing:.55em;
+      text-transform:uppercase;
+      color:var(--cream2);
+      margin-bottom:.15rem;
+      animation:fadeD .9s ease both .35s; opacity:0;
+    }
+
+    /* ─ divider ─ */
+    .divider {
+      display:flex; align-items:center; gap:.6rem;
+      margin:.4rem 0 .7rem;
+      animation:fadeD .9s ease both .4s; opacity:0;
+    }
+    .div-line { width:45px; height:1px; background:linear-gradient(90deg,transparent,rgba(201,148,10,.5)); }
+    .div-line.r { background:linear-gradient(90deg,rgba(201,148,10,.5),transparent); }
+    .div-diamond { width:5px; height:5px; background:var(--gold); transform:rotate(45deg); }
+
+    /* ─ GOLD MEDALLION / stag seal ─ */
+    .medallion {
+      position:relative; margin:.2rem 0 .8rem;
+      animation:fadeD .9s ease both .45s; opacity:0;
+    }
+    .medallion svg {
+      width:clamp(72px,11vw,115px);
+      filter:drop-shadow(0 0 14px rgba(201,148,10,.55)) drop-shadow(0 0 30px rgba(201,148,10,.2));
+    }
+
+    /* ─ headline ─ */
     .headline {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 7.5vw, 6.2rem);
-      font-weight: 700;
-      line-height: 1.0;
-      text-align: center;
-      color: var(--cream);
-      text-shadow: 0 0 60px rgba(232,160,32,0.35), 0 3px 30px rgba(0,0,0,0.9);
-      margin-bottom: 0.25rem;
-      animation: fadeD 1s ease both 0.5s; opacity: 0;
+      font-family:'Playfair Display',serif;
+      font-size:clamp(1.9rem,5.5vw,4.8rem);
+      font-weight:900; line-height:1.0;
+      text-align:center;
+      color:var(--cream);
+      text-shadow:0 0 50px rgba(201,148,10,.3), 0 3px 25px rgba(0,0,0,.95);
+      margin-bottom:.2rem;
+      animation:fadeD .9s ease both .55s; opacity:0;
     }
-    .headline em { font-style: italic; color: var(--amber-warm); }
+    .headline em { font-style:italic; color:var(--gold3); }
 
     .subheadline {
-      font-size: clamp(0.82rem, 1.9vw, 1.1rem);
-      font-weight: 300; font-style: italic;
-      color: rgba(245,238,220,0.48);
-      text-align: center; letter-spacing: 0.04em;
-      margin-bottom: 1.8rem;
-      animation: fadeD 1s ease both 0.7s; opacity: 0;
+      font-size:clamp(.78rem,1.8vw,1.05rem); font-style:italic;
+      color:rgba(248,240,216,.45); letter-spacing:.05em; text-align:center;
+      margin-bottom:1.4rem;
+      animation:fadeD .9s ease both .65s; opacity:0;
     }
 
-    /* deer */
-    .deer-wrap {
-      margin-bottom: 1.5rem;
-      animation: fadeD 1s ease both 0.6s; opacity: 0;
-    }
-    .deer-wrap svg {
-      width: clamp(55px, 8.5vw, 90px);
-      filter: drop-shadow(0 0 16px rgba(232,160,32,0.45));
-    }
-
-    /* countdown */
+    /* ─── COUNTDOWN BOXES ─── */
     .countdown {
-      display: flex; gap: clamp(0.7rem, 3vw, 2.5rem);
-      align-items: flex-start;
-      margin-bottom: 2.4rem;
-      animation: fadeU 1.2s ease both 0.9s; opacity: 0;
+      display:flex; gap:clamp(.5rem,2.5vw,2rem);
+      align-items:flex-start; margin-bottom:1.4rem;
+      animation:fadeU 1.1s ease both .8s; opacity:0;
     }
-    .unit { display: flex; flex-direction: column; align-items: center; }
+    .unit { display:flex; flex-direction:column; align-items:center; }
 
     .unit-box {
-      position: relative;
-      background: rgba(30,61,36,0.3);
-      border: 1px solid rgba(232,160,32,0.22);
-      border-radius: 8px;
-      padding: clamp(0.55rem,1.4vw,1.1rem) clamp(0.7rem,1.8vw,1.6rem);
-      backdrop-filter: blur(10px);
+      position:relative;
+      background:rgba(15,50,20,.55);
+      border:1.5px solid var(--gold);
+      border-radius:4px;
+      padding:clamp(.4rem,1.2vw,.9rem) clamp(.6rem,1.6vw,1.4rem);
+      backdrop-filter:blur(8px);
+      overflow:hidden;
     }
+    /* inner shine */
     .unit-box::before {
-      content: '';
-      position: absolute; inset: 0; border-radius: 7px;
-      background: linear-gradient(155deg, rgba(232,160,32,0.07) 0%, transparent 50%);
-      pointer-events: none;
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:35%;
+      background:linear-gradient(180deg,rgba(245,204,80,.1),transparent);
+      pointer-events:none;
+    }
+    /* bottom gold line */
+    .unit-box::after {
+      content:'';
+      position:absolute; bottom:0; left:10%; right:10%; height:2px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+      pointer-events:none;
     }
 
     .unit-value {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 9vw, 7.8rem);
-      font-weight: 700; line-height: 1;
-      color: var(--amber-pale);
-      text-shadow: 0 0 28px rgba(232,160,32,0.65), 0 0 55px rgba(232,160,32,0.22);
-      min-width: 2ch; text-align: center; display: block;
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.4rem,8vw,7rem);
+      font-weight:900; line-height:1;
+      color:var(--gold-pale);
+      text-shadow:0 0 24px rgba(201,148,10,.7), 0 0 50px rgba(201,148,10,.3);
+      min-width:2ch; text-align:center; display:block;
     }
-
     .unit-label {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(0.44rem, 1vw, 0.58rem);
-      letter-spacing: 0.28em; text-transform: uppercase;
-      color: rgba(232,160,32,0.55); margin-top: 0.55rem; text-align: center;
+      font-family:'DM Mono',monospace;
+      font-size:clamp(.4rem,.9vw,.55rem);
+      letter-spacing:.28em; text-transform:uppercase;
+      color:rgba(201,148,10,.65); margin-top:.45rem; text-align:center;
     }
 
     .sep {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 5.5vw, 4.5rem);
-      color: rgba(232,160,32,0.22);
-      padding-top: clamp(0.45rem,1.4vw,0.9rem);
-      animation: blink 2s step-start infinite; line-height: 1;
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(1.6rem,5vw,4rem);
+      color:rgba(201,148,10,.3);
+      padding-top:clamp(.35rem,1.2vw,.75rem);
+      animation:blink 2s step-start infinite; line-height:1;
     }
-    @keyframes blink { 0%,49%{opacity:.9;} 50%,100%{opacity:.08;} }
+    @keyframes blink{ 0%,49%{opacity:.9;} 50%,100%{opacity:.08;} }
 
-    /* info strip */
+    /* ─ info strip ─ */
     .info-strip {
-      display: flex; align-items: center; gap: 1.2rem;
-      border-top: 1px solid rgba(232,160,32,0.12);
-      border-bottom: 1px solid rgba(232,160,32,0.12);
-      padding: 0.65rem 1.8rem;
-      margin-bottom: 1rem;
-      animation: fadeU 1.2s ease both 1.1s; opacity: 0;
+      display:flex; align-items:center; gap:1rem;
+      border-top:1px solid rgba(201,148,10,.25);
+      border-bottom:1px solid rgba(201,148,10,.25);
+      padding:.5rem 1.4rem; margin-bottom:.7rem;
+      animation:fadeU 1.1s ease both 1s; opacity:0;
     }
     .info-item {
-      display: flex; align-items: center; gap: 0.4rem;
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(0.5rem, 1.05vw, 0.6rem);
-      letter-spacing: 0.15em;
-      color: rgba(232,160,32,0.6);
+      font-family:'DM Mono',monospace;
+      font-size:clamp(.42rem,.95vw,.56rem);
+      letter-spacing:.15em; color:rgba(201,148,10,.65);
+      display:flex; align-items:center; gap:.35rem;
     }
-    .info-sep { color: rgba(232,160,32,0.18); font-size: 0.9rem; }
+    .info-sep { color:rgba(201,148,10,.2); }
 
+    /* ─ footer ─ */
     .footer-note {
-      font-style: italic;
-      font-size: clamp(0.68rem, 1.4vw, 0.86rem);
-      color: rgba(245,238,220,0.26); text-align: center;
-      animation: fadeU 1.2s ease both 1.3s; opacity: 0;
+      font-style:italic; text-align:center;
+      font-size:clamp(.62rem,1.3vw,.8rem);
+      color:rgba(248,240,216,.25);
+      animation:fadeU 1.1s ease both 1.15s; opacity:0;
     }
-    .footer-note span { color: rgba(232,160,32,0.38); }
+    .footer-note b { color:rgba(201,148,10,.4); font-weight:400; }
 
-    /* arrived */
+    /* ─── ARRIVED ─── */
     .arrived-message {
-      display: none; flex-direction: column;
-      align-items: center; gap: 1.5rem; text-align: center;
+      display:none; flex-direction:column;
+      align-items:center; gap:1.2rem; text-align:center;
     }
     .arrived-message.show {
-      display: flex;
-      animation: popIn 1s cubic-bezier(0.34,1.56,0.64,1) both;
+      display:flex;
+      animation:popIn 1s cubic-bezier(.34,1.56,.64,1) both;
     }
-    @keyframes popIn { 0%{opacity:0;transform:scale(0.7)} 100%{opacity:1;transform:scale(1)} }
+    @keyframes popIn{ 0%{opacity:0;transform:scale(.65)} 100%{opacity:1;transform:scale(1)} }
+    .arrived-emoji { font-size:clamp(3rem,8vw,5rem); }
     .arrived-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 8.5vw, 6rem);
-      font-weight: 700; color: var(--amber-warm);
-      text-shadow: 0 0 60px rgba(232,160,32,0.6);
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.2rem,8vw,5.5rem);
+      font-weight:900; color:var(--gold3);
+      text-shadow:0 0 50px rgba(201,148,10,.6);
     }
     .arrived-sub {
-      font-size: clamp(1rem,2.5vw,1.35rem); font-style: italic;
-      color: rgba(245,238,220,0.65); line-height: 1.8;
+      font-size:clamp(.9rem,2.2vw,1.25rem); font-style:italic;
+      color:rgba(248,240,216,.65); line-height:1.85;
     }
-    .cheers {
-      font-family: 'DM Mono', monospace;
-      font-size: clamp(0.58rem,1.2vw,0.72rem);
-      letter-spacing: 0.3em; color: var(--amber); text-transform: uppercase;
-      margin-top: 0.4rem;
+    .arrived-tag {
+      font-family:'DM Mono',monospace; font-size:clamp(.5rem,1.1vw,.65rem);
+      letter-spacing:.3em; text-transform:uppercase; color:var(--gold2);
+      margin-top:.3rem;
     }
 
-    @keyframes fadeD { 0%{opacity:0;transform:translateY(-16px)} 100%{opacity:1;transform:translateY(0)} }
-    @keyframes fadeU { 0%{opacity:0;transform:translateY(16px)}  100%{opacity:1;transform:translateY(0)} }
+    @keyframes fadeD{ 0%{opacity:0;transform:translateY(-14px)} 100%{opacity:1;transform:translateY(0)} }
+    @keyframes fadeU{ 0%{opacity:0;transform:translateY(14px)}  100%{opacity:1;transform:translateY(0)} }
 
-    @media (max-width: 600px) {
-      .sep { display: none; }
-      .countdown { gap: 0.45rem; }
-      .info-strip { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
-      .hops-left, .hops-right { display: none; }
+    @media(max-width:700px){
+      .content{ padding:1.2rem 1rem 4rem; }
+      .side-cans{ display:none; }
+      .sep{ display:none; }
+      .countdown{ gap:.4rem; }
+      .info-strip{ flex-wrap:wrap; justify-content:center; gap:.4rem; }
     }
   </style>
 </head>
 <body>
 
 <div class="bg"></div>
-<div class="grain"></div>
-<div class="frame"></div>
-<div class="corner tl"></div><div class="corner tr"></div>
-<div class="corner bl"></div><div class="corner br"></div>
+<div class="noise"></div>
+<div class="border-outer"></div>
+<div class="border-inner"></div>
+<div class="diamond tl"></div><div class="diamond tr"></div>
+<div class="diamond bl"></div><div class="diamond br"></div>
 
-<!-- Hop branch left -->
-<div class="hops-left">
-  <svg width="160" height="300" viewBox="0 0 160 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M80 10 Q75 80 70 150 Q65 220 60 290" stroke="#2d5c35" stroke-width="3" fill="none"/>
-    <ellipse cx="55" cy="55" rx="40" ry="48" fill="#3d6830" transform="rotate(-35 55 55)"/>
-    <line x1="55" y1="30" x2="70" y2="55" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="40" y1="48" x2="65" y2="55" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="55" y1="80" x2="70" y2="55" stroke="#2d5c35" stroke-width="1.5"/>
-    <ellipse cx="88" cy="145" rx="38" ry="46" fill="#4a7a3a" transform="rotate(-20 88 145)"/>
-    <line x1="88" y1="122" x2="78" y2="145" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="65" y1="138" x2="78" y2="145" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="88" y1="168" x2="78" y2="145" stroke="#2d5c35" stroke-width="1.5"/>
-    <ellipse cx="52" cy="235" rx="36" ry="44" fill="#3d6830" transform="rotate(-28 52 235)"/>
-    <line x1="52" y1="214" x2="62" y2="235" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="30" y1="228" x2="62" y2="235" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="52" y1="256" x2="62" y2="235" stroke="#2d5c35" stroke-width="1.5"/>
-  </svg>
+<!-- ── Side mini beer cans (SVG, Barahsinghe style) ── -->
+<div class="side-cans left">
+  <div class="mini-can"><!-- Can SVG --><svg viewBox="0 0 44 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="cg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2e12"/><stop offset="30%" stop-color="#1a4a20"/><stop offset="70%" stop-color="#1a4a20"/><stop offset="100%" stop-color="#0d2e12"/></linearGradient>
+      <linearGradient id="cg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0a2210"/><stop offset="50%" stop-color="#163b1c"/><stop offset="100%" stop-color="#0a2210"/></linearGradient>
+    </defs>
+    <!-- can body -->
+    <rect x="4" y="8" width="36" height="52" rx="5" fill="url(#cg1)"/>
+    <!-- gold top band -->
+    <rect x="4" y="8" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="12" width="36" height="3" fill="#c9940a"/>
+    <!-- gold bottom band -->
+    <rect x="4" y="53" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="3" fill="#c9940a"/>
+    <!-- top lid -->
+    <ellipse cx="22" cy="8" rx="18" ry="4" fill="#a07808"/>
+    <ellipse cx="22" cy="7" rx="10" ry="2" fill="#c9940a"/>
+    <!-- bottom base -->
+    <ellipse cx="22" cy="60" rx="18" ry="4" fill="#a07808"/>
+    <!-- brand name on can -->
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">Barah</text>
+    <text x="22" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">singhe</text>
+    <!-- mini deer -->
+    <text x="22" y="48" text-anchor="middle" font-size="9">🦌</text>
+    <!-- shine -->
+    <rect x="8" y="16" width="4" height="32" rx="2" fill="white" opacity=".06"/>
+    <!-- pull tab -->
+    <rect x="18" y="3" width="8" height="3" rx="1.5" fill="#888"/>
+    <rect x="20" y="1" width="4" height="3" rx="1" fill="#aaa"/>
+  </svg></div>
+
+  <div class="mini-can" style="animation-delay:.8s"><svg viewBox="0 0 44 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="cg3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2e12"/><stop offset="30%" stop-color="#1a4a20"/><stop offset="70%" stop-color="#1a4a20"/><stop offset="100%" stop-color="#0d2e12"/></linearGradient></defs>
+    <rect x="4" y="8" width="36" height="52" rx="5" fill="url(#cg3)"/>
+    <rect x="4" y="8" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="12" width="36" height="3" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="3" fill="#c9940a"/>
+    <ellipse cx="22" cy="8" rx="18" ry="4" fill="#a07808"/>
+    <ellipse cx="22" cy="7" rx="10" ry="2" fill="#c9940a"/>
+    <ellipse cx="22" cy="60" rx="18" ry="4" fill="#a07808"/>
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">Barah</text>
+    <text x="22" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">singhe</text>
+    <text x="22" y="48" text-anchor="middle" font-size="9">🦌</text>
+    <rect x="8" y="16" width="4" height="32" rx="2" fill="white" opacity=".06"/>
+    <rect x="18" y="3" width="8" height="3" rx="1.5" fill="#888"/>
+    <rect x="20" y="1" width="4" height="3" rx="1" fill="#aaa"/>
+  </svg></div>
+
+  <div class="mini-can" style="animation-delay:1.6s"><svg viewBox="0 0 44 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="cg4" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2e12"/><stop offset="30%" stop-color="#1a4a20"/><stop offset="70%" stop-color="#1a4a20"/><stop offset="100%" stop-color="#0d2e12"/></linearGradient></defs>
+    <rect x="4" y="8" width="36" height="52" rx="5" fill="url(#cg4)"/>
+    <rect x="4" y="8" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="12" width="36" height="3" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="3" fill="#c9940a"/>
+    <ellipse cx="22" cy="8" rx="18" ry="4" fill="#a07808"/>
+    <ellipse cx="22" cy="7" rx="10" ry="2" fill="#c9940a"/>
+    <ellipse cx="22" cy="60" rx="18" ry="4" fill="#a07808"/>
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">Barah</text>
+    <text x="22" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">singhe</text>
+    <text x="22" y="48" text-anchor="middle" font-size="9">🦌</text>
+    <rect x="8" y="16" width="4" height="32" rx="2" fill="white" opacity=".06"/>
+    <rect x="18" y="3" width="8" height="3" rx="1.5" fill="#888"/>
+    <rect x="20" y="1" width="4" height="3" rx="1" fill="#aaa"/>
+  </svg></div>
 </div>
 
-<!-- Hop branch right -->
-<div class="hops-right">
-  <svg width="160" height="300" viewBox="0 0 160 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M80 10 Q75 80 70 150 Q65 220 60 290" stroke="#2d5c35" stroke-width="3" fill="none"/>
-    <ellipse cx="55" cy="55" rx="40" ry="48" fill="#3d6830" transform="rotate(-35 55 55)"/>
-    <line x1="55" y1="30" x2="70" y2="55" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="40" y1="48" x2="65" y2="55" stroke="#2d5c35" stroke-width="1.5"/>
-    <line x1="55" y1="80" x2="70" y2="55" stroke="#2d5c35" stroke-width="1.5"/>
-    <ellipse cx="88" cy="145" rx="38" ry="46" fill="#4a7a3a" transform="rotate(-20 88 145)"/>
-    <ellipse cx="52" cy="235" rx="36" ry="44" fill="#3d6830" transform="rotate(-28 52 235)"/>
-  </svg>
+<div class="side-cans right">
+  <div class="mini-can" style="animation-delay:.4s"><svg viewBox="0 0 44 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="cg5" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2e12"/><stop offset="30%" stop-color="#1a4a20"/><stop offset="70%" stop-color="#1a4a20"/><stop offset="100%" stop-color="#0d2e12"/></linearGradient></defs>
+    <rect x="4" y="8" width="36" height="52" rx="5" fill="url(#cg5)"/>
+    <rect x="4" y="8" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="12" width="36" height="3" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="3" fill="#c9940a"/>
+    <ellipse cx="22" cy="8" rx="18" ry="4" fill="#a07808"/>
+    <ellipse cx="22" cy="7" rx="10" ry="2" fill="#c9940a"/>
+    <ellipse cx="22" cy="60" rx="18" ry="4" fill="#a07808"/>
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">Barah</text>
+    <text x="22" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">singhe</text>
+    <text x="22" y="48" text-anchor="middle" font-size="9">🦌</text>
+    <rect x="8" y="16" width="4" height="32" rx="2" fill="white" opacity=".06"/>
+    <rect x="18" y="3" width="8" height="3" rx="1.5" fill="#888"/>
+    <rect x="20" y="1" width="4" height="3" rx="1" fill="#aaa"/>
+  </svg></div>
+
+  <div class="mini-can" style="animation-delay:1.2s"><svg viewBox="0 0 44 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="cg6" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2e12"/><stop offset="30%" stop-color="#1a4a20"/><stop offset="70%" stop-color="#1a4a20"/><stop offset="100%" stop-color="#0d2e12"/></linearGradient></defs>
+    <rect x="4" y="8" width="36" height="52" rx="5" fill="url(#cg6)"/>
+    <rect x="4" y="8" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="12" width="36" height="3" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="3" fill="#c9940a"/>
+    <ellipse cx="22" cy="8" rx="18" ry="4" fill="#a07808"/>
+    <ellipse cx="22" cy="7" rx="10" ry="2" fill="#c9940a"/>
+    <ellipse cx="22" cy="60" rx="18" ry="4" fill="#a07808"/>
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">Barah</text>
+    <text x="22" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">singhe</text>
+    <text x="22" y="48" text-anchor="middle" font-size="9">🦌</text>
+    <rect x="8" y="16" width="4" height="32" rx="2" fill="white" opacity=".06"/>
+    <rect x="18" y="3" width="8" height="3" rx="1.5" fill="#888"/>
+    <rect x="20" y="1" width="4" height="3" rx="1" fill="#aaa"/>
+  </svg></div>
+
+  <div class="mini-can" style="animation-delay:2s"><svg viewBox="0 0 44 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="cg7" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2e12"/><stop offset="30%" stop-color="#1a4a20"/><stop offset="70%" stop-color="#1a4a20"/><stop offset="100%" stop-color="#0d2e12"/></linearGradient></defs>
+    <rect x="4" y="8" width="36" height="52" rx="5" fill="url(#cg7)"/>
+    <rect x="4" y="8" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="12" width="36" height="3" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="7" rx="5" fill="#c9940a"/>
+    <rect x="4" y="53" width="36" height="3" fill="#c9940a"/>
+    <ellipse cx="22" cy="8" rx="18" ry="4" fill="#a07808"/>
+    <ellipse cx="22" cy="7" rx="10" ry="2" fill="#c9940a"/>
+    <ellipse cx="22" cy="60" rx="18" ry="4" fill="#a07808"/>
+    <text x="22" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">Barah</text>
+    <text x="22" y="36" text-anchor="middle" font-family="Georgia,serif" font-size="4.5" font-weight="bold" fill="#e8b020" letter-spacing="0.5">singhe</text>
+    <text x="22" y="48" text-anchor="middle" font-size="9">🦌</text>
+    <rect x="8" y="16" width="4" height="32" rx="2" fill="white" opacity=".06"/>
+    <rect x="18" y="3" width="8" height="3" rx="1.5" fill="#888"/>
+    <rect x="20" y="1" width="4" height="3" rx="1" fill="#aaa"/>
+  </svg></div>
 </div>
 
+<!-- ── Cheers glasses row at bottom ── -->
+<div class="cheers-row" id="cheers-row"></div>
+
+<!-- ── Bubbles ── -->
 <div class="bubbles" id="bubbles"></div>
 
+<!-- ── MAIN ── -->
 <div class="content">
 
   <div id="countdown-section">
-    <div class="badge">
-      <div class="badge-line"></div>
-      <div class="badge-icon">🦌</div>
-      <div class="badge-line r"></div>
+
+    <div class="top-rule">
+      <div class="rule-line"></div>
+      <span class="rule-text">Welcome Back!</span>
+      <div class="rule-line r"></div>
     </div>
 
-    <p class="brand-tag">Barahsinghe · Craft Pilsner · Est. 2016</p>
-    <h1 class="headline"><em>Aditya</em> is Coming Home</h1>
-    <p class="subheadline">from the UK — cold pints &amp; warm arms await</p>
 
-    <!-- Barasingha deer SVG -->
-    <div class="deer-wrap">
-      <svg viewBox="0 0 120 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="divider">
+      <div class="div-line"></div>
+      <div class="div-diamond"></div>
+      <div class="div-line r"></div>
+    </div>
+
+    <!-- MEDALLION — gold stag seal -->
+    <div class="medallion">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- outer ring -->
+        <circle cx="60" cy="60" r="56" stroke="#c9940a" stroke-width="2"/>
+        <circle cx="60" cy="60" r="52" stroke="#c9940a" stroke-width=".8" opacity=".5"/>
+        <!-- inner ring -->
+        <circle cx="60" cy="60" r="46" stroke="#c9940a" stroke-width="1.2" opacity=".6"/>
+        <!-- tiny dots on outer ring -->
+        <g fill="#c9940a" opacity=".7">
+          <circle cx="60" cy="4"  r="1.8"/><circle cx="60" cy="116" r="1.8"/>
+          <circle cx="4"  cy="60" r="1.8"/><circle cx="116" cy="60" r="1.8"/>
+          <circle cx="19" cy="19" r="1.4"/><circle cx="101" cy="19" r="1.4"/>
+          <circle cx="19" cy="101" r="1.4"/><circle cx="101" cy="101" r="1.4"/>
+        </g>
+        <!-- Stag (Barasingha) -->
         <!-- left antler -->
-        <path d="M52 30 Q46 18 40 9 Q36 3 32 7 Q37 14 35 23" stroke="#e8a020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M40 9 Q33 5 29 11" stroke="#e8a020" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M52 30 Q49 16 45 7 Q42 1 38 5" stroke="#e8a020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M52 45 Q46 34 41 26 Q38 20 34 23 Q39 30 37 38" stroke="#c9940a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M41 26 Q35 22 31 27" stroke="#c9940a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M52 45 Q49 33 45 25 Q42 19 38 22" stroke="#c9940a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
         <!-- right antler -->
-        <path d="M68 30 Q74 18 80 9 Q84 3 88 7 Q83 14 85 23" stroke="#e8a020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M80 9 Q87 5 91 11" stroke="#e8a020" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M68 30 Q71 16 75 7 Q78 1 82 5" stroke="#e8a020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M68 45 Q74 34 79 26 Q82 20 86 23 Q81 30 83 38" stroke="#c9940a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M79 26 Q85 22 89 27" stroke="#c9940a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M68 45 Q71 33 75 25 Q78 19 82 22" stroke="#c9940a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
         <!-- head -->
-        <ellipse cx="60" cy="37" rx="14" ry="13" fill="#e8a020"/>
+        <ellipse cx="60" cy="52" rx="12" ry="11" fill="#c9940a"/>
         <!-- eye -->
-        <circle cx="55" cy="34" r="2.5" fill="#0d1f12"/>
-        <circle cx="54.5" cy="33.5" r="0.8" fill="#fad070"/>
+        <circle cx="55.5" cy="49.5" r="2" fill="#0b1c0f"/>
+        <circle cx="55" cy="49" r=".7" fill="#e8b020"/>
         <!-- ear -->
-        <ellipse cx="73" cy="31" rx="5" ry="7" fill="#c47a10" transform="rotate(18 73 31)"/>
+        <ellipse cx="71" cy="46" rx="4" ry="5.5" fill="#a07808" transform="rotate(18 71 46)"/>
         <!-- nose -->
-        <ellipse cx="50" cy="41" rx="3.5" ry="2.5" fill="#c47a10"/>
-        <!-- neck -->
-        <path d="M50 47 Q47 56 49 64 L71 64 Q73 56 70 47 Z" fill="#d49018"/>
-        <!-- body -->
-        <ellipse cx="60" cy="87" rx="27" ry="21" fill="#e8a020"/>
-        <ellipse cx="62" cy="92" rx="13" ry="9" fill="#f0b840" opacity="0.35"/>
+        <ellipse cx="51" cy="57" rx="3" ry="2" fill="#a07808"/>
+        <!-- neck + body -->
+        <path d="M51 62 Q48 70 50 78 L70 78 Q72 70 69 62 Z" fill="#b88008"/>
+        <ellipse cx="60" cy="92" rx="22" ry="17" fill="#c9940a"/>
+        <ellipse cx="61" cy="96" rx="11" ry="7.5" fill="#e8b020" opacity=".35"/>
         <!-- legs -->
-        <rect x="45" y="105" width="8" height="26" rx="4" fill="#c47a10"/>
-        <rect x="57" y="107" width="8" height="24" rx="4" fill="#c47a10"/>
-        <rect x="69" y="105" width="8" height="26" rx="4" fill="#c47a10"/>
-        <!-- hooves -->
-        <rect x="44" y="128" width="10" height="5" rx="2.5" fill="#6a3a08"/>
-        <rect x="56" y="128" width="10" height="5" rx="2.5" fill="#6a3a08"/>
-        <rect x="68" y="128" width="10" height="5" rx="2.5" fill="#6a3a08"/>
-        <!-- white tail -->
-        <ellipse cx="87" cy="78" rx="6" ry="7.5" fill="#f5eedc" opacity="0.8"/>
-        <!-- glow ring -->
-        <ellipse cx="60" cy="87" rx="31" ry="25" fill="none" stroke="#e8a020" stroke-width="0.7" opacity="0.25"/>
+        <rect x="48" y="107" width="6.5" height="9" rx="3" fill="#a07808"/>
+        <rect x="57" y="108" width="6.5" height="8" rx="3" fill="#a07808"/>
+        <rect x="66" y="107" width="6.5" height="9" rx="3" fill="#a07808"/>
+        <!-- tail -->
+        <ellipse cx="81" cy="84" rx="5" ry="6" fill="#f8f0d8" opacity=".7"/>
+        <!-- text arc top -->
+        <path id="topArc" d="M 20,60 A 40,40 0 0,1 100,60" fill="none"/>
+        <text font-family="Georgia,serif" font-size="7" fill="#e8b020" letter-spacing="2" font-weight="bold">
+          <textPath href="#topArc" startOffset="8%">BARAHSINGHE CRAFT</textPath>
+        </text>
+        <!-- text arc bottom -->
+        <path id="botArc" d="M 20,62 A 40,40 0 0,0 100,62" fill="none"/>
+        <text font-family="Georgia,serif" font-size="6" fill="#c9940a" letter-spacing="2">
+          <textPath href="#botArc" startOffset="12%">· PILSNER BIER ·</textPath>
+        </text>
       </svg>
     </div>
 
-    <!-- countdown boxes -->
+    <h1 class="headline"><em>Aditya</em> is Coming Home</h1>
+    <p class="subheadline">from the United Kingdom — cold ones &amp; warm arms await</p>
+
+    <!-- COUNTDOWN -->
     <div class="countdown" id="countdown">
       <div class="unit">
         <div class="unit-box"><span class="unit-value" id="days">--</span></div>
@@ -393,47 +580,63 @@
 
     <div class="info-strip">
       <div class="info-item">✈ <span>September 15, 2026</span></div>
-      <div class="info-sep">·</div>
-      <div class="info-item">📍 <span>Tribhuvan International</span></div>
-      <div class="info-sep">·</div>
+      <div class="info-sep">&nbsp;·&nbsp;</div>
+      <div class="info-item">📍 <span>Tribhuvan International Airport</span></div>
+      <div class="info-sep">&nbsp;·&nbsp;</div>
       <div class="info-item">🍺 <span>Cold ones ready</span></div>
     </div>
 
     <p class="footer-note">
-      आदित्य, गृहआगमनको स्वागत छ &nbsp;<span>·</span>&nbsp; Brew Responsibly &nbsp;<span>·</span>&nbsp; Yak Brewing Co.
+      आदित्य, गृहआगमनको स्वागत छ &nbsp;<b>·</b>&nbsp; Brew Responsibly &nbsp;<b>·</b>&nbsp; #BarahsingheCraft
     </p>
-  </div>
 
-  <!-- arrived state -->
+  </div><!-- /countdown-section -->
+
+  <!-- ARRIVED -->
   <div class="arrived-message" id="arrived">
-    <div class="arrived-title">🍺 Cheers, Aditya!</div>
-    <p class="arrived-sub">Welcome home, brother.<br/>आदित्य, गृहआगमनको हार्दिक स्वागत छ।</p>
-    <p class="cheers">First round's on Nepal 🦌</p>
+    <div class="arrived-emoji">🍺🦌🍺</div>
+    <div class="arrived-title">Cheers, Aditya!</div>
+    <p class="arrived-sub">
+      Welcome home, brother.<br/>
+      आदित्य, गृहआगमनको हार्दिक स्वागत छ।
+    </p>
+    <p class="arrived-tag">First round's on Nepal · #BarahsingheCraft</p>
   </div>
 
-</div>
+</div><!-- /content -->
 
 <script>
-  // bubbles
+  // ── Cheers row at bottom ───────────────────────────────
+  const cheersRow = document.getElementById('cheers-row');
+  const glassEmojis = ['🍺','🍻','🥂','🍺','🍻','🍺','🥂','🍺','🍻','🍺'];
+  glassEmojis.forEach((em, i) => {
+    const g = document.createElement('span');
+    g.className = 'cheer-glass';
+    g.textContent = em;
+    g.style.setProperty('--cd',  `${2.5 + Math.random()*2}s`);
+    g.style.setProperty('--cdelay', `${i * 0.18}s`);
+    cheersRow.appendChild(g);
+  });
+
+  // ── Bubbles ────────────────────────────────────────────
   const bubblesEl = document.getElementById('bubbles');
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 35; i++) {
     const b = document.createElement('div');
     b.className = 'bubble';
-    const sz = 5 + Math.random() * 22;
+    const sz = 4 + Math.random() * 20;
     b.style.cssText = `
-      left:${4+Math.random()*92}%;
-      bottom:${-4+Math.random()*8}%;
+      left:${3+Math.random()*94}%;
+      bottom:${-3+Math.random()*6}%;
       width:${sz}px; height:${sz}px;
-      --rd:${8+Math.random()*14}s;
+      --rd:${7+Math.random()*13}s;
       --rdelay:${Math.random()*18}s;
     `;
     bubblesEl.appendChild(b);
   }
 
-  // countdown — Nepal Standard Time UTC+5:45
-  const target = new Date('2026-09-15T00:00:00+05:45');
-
-  function pad(n) { return String(n).padStart(2,'0'); }
+  // ── Countdown ──────────────────────────────────────────
+  const target = new Date('2026-09-15T00:00:00+05:45'); // Nepal Time
+  const pad = n => String(n).padStart(2,'0');
 
   function tick() {
     const diff = target - new Date();
@@ -447,7 +650,6 @@
     document.getElementById('minutes').textContent = pad(Math.floor((diff%36e5)/6e4));
     document.getElementById('seconds').textContent = pad(Math.floor((diff%6e4)/1e3));
   }
-
   tick();
   setInterval(tick, 1000);
 </script>
