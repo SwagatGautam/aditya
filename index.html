@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aditya is Coming Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rust:    #c0522a;
+      --saffron: #e8923c;
+      --gold:    #d4a843;
+      --cream:   #f5ede0;
+      --bark:    #3a2010;
+      --mist:    rgba(245,237,224,0.07);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #1a0e06;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--cream);
+      cursor: default;
+      user-select: none;
+    }
+
+    /* ── Sky / gradient atmosphere ── */
+    .sky {
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% 0%, #4b2008 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 20% 100%, #2d1406 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, #251008 0%, transparent 55%),
+        linear-gradient(180deg, #0d0603 0%, #1c0d06 40%, #2a140a 70%, #150803 100%);
+      z-index: 0;
+    }
+
+    /* ── Stars ── */
+    .stars {
+      position: fixed; inset: 0; z-index: 1;
+      overflow: hidden;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: var(--cream);
+      animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+      opacity: 0;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50%       { opacity: var(--op, 0.7); transform: scale(1.2); }
+    }
+
+    /* ── Mountains silhouette ── */
+    .mountains {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 2;
+      height: 55vh;
+    }
+    .mountains svg { width: 100%; height: 100%; }
+
+    /* ── Glow behind mountains ── */
+    .horizon-glow {
+      position: fixed;
+      bottom: 38vh; left: 0; right: 0;
+      height: 18vh;
+      background: radial-gradient(ellipse 70% 100% at 50% 100%, rgba(192,82,42,0.35) 0%, transparent 80%);
+      z-index: 3;
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%,100% { opacity: 0.7; }
+      50%      { opacity: 1; }
+    }
+
+    /* ── Floating particles ── */
+    .particles { position: fixed; inset: 0; z-index: 4; pointer-events: none; }
+    .particle {
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--saffron);
+      opacity: 0;
+      animation: floatUp var(--pd, 8s) ease-in infinite var(--pdelay, 0s);
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) scale(1); }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.1; }
+      100% { opacity: 0; transform: translateY(-80vh) scale(0.3); }
+    }
+
+    /* ── Main content ── */
+    .content {
+      position: fixed; inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      gap: 0;
+    }
+
+    /* ── Ornament line ── */
+    .ornament {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.6rem;
+      animation: fadeSlideDown 1.2s ease both 0.2s;
+    }
+    .ornament-line {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .ornament-line.right {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .ornament-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    /* ── "He's coming home" header ── */
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 0.6rem;
+      animation: fadeSlideDown 1.2s ease both 0.4s;
+      opacity: 0;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.4rem, 7vw, 6rem);
+      font-weight: 400;
+      line-height: 1.05;
+      text-align: center;
+      letter-spacing: -0.01em;
+      color: var(--cream);
+      text-shadow: 0 0 80px rgba(232,146,60,0.4), 0 2px 40px rgba(0,0,0,0.8);
+      animation: fadeSlideDown 1.2s ease both 0.6s;
+      opacity: 0;
+      margin-bottom: 0.3rem;
+    }
+    .headline em {
+      font-style: italic;
+      color: var(--saffron);
+    }
+
+    .subheadline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.9rem, 2.2vw, 1.25rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(245,237,224,0.55);
+      text-align: center;
+      letter-spacing: 0.03em;
+      animation: fadeSlideDown 1.2s ease both 0.8s;
+      opacity: 0;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── Countdown ── */
+    .countdown {
+      display: flex;
+      gap: clamp(1rem, 4vw, 3rem);
+      align-items: flex-start;
+      animation: fadeSlideUp 1.4s ease both 1s;
+      opacity: 0;
+      margin-bottom: 3.5rem;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .unit-value {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 10vw, 8.5rem);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--cream);
+      text-shadow:
+        0 0 40px rgba(232,146,60,0.5),
+        0 0 80px rgba(212,168,67,0.2),
+        0 4px 20px rgba(0,0,0,0.6);
+      min-width: 2ch;
+      text-align: center;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .unit-value::after {
+      content: '';
+      position: absolute;
+      bottom: -6px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.5;
+    }
+
+    .unit-label {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(0.5rem, 1.2vw, 0.65rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(212,168,67,0.7);
+      margin-top: 0.4rem;
+    }
+
+    .sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 5rem);
+      color: rgba(212,168,67,0.3);
+      line-height: 1;
+      padding-top: 0.1em;
+      animation: blink 2s step-start infinite;
+    }
+    @keyframes blink {
+      0%,49% { opacity: 0.8; }
+      50%,100%{ opacity: 0.15; }
+    }
+
+    /* ── Date chip ── */
+    .date-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: 1px solid rgba(212,168,67,0.25);
+      border-radius: 100px;
+      padding: 0.6rem 1.6rem;
+      background: rgba(212,168,67,0.05);
+      backdrop-filter: blur(6px);
+      animation: fadeSlideUp 1.4s ease both 1.2s;
+      opacity: 0;
+      margin-bottom: 1rem;
+    }
+    .date-chip-icon { font-size: 1rem; }
+    .date-chip-text {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(0.6rem, 1.3vw, 0.72rem);
+      letter-spacing: 0.2em;
+      color: rgba(212,168,67,0.8);
+    }
+
+    /* ── Footer note ── */
+    .footer-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(0.75rem, 1.6vw, 0.95rem);
+      color: rgba(245,237,224,0.3);
+      text-align: center;
+      animation: fadeSlideUp 1.4s ease both 1.4s;
+      opacity: 0;
+    }
+
+    /* ── Arrived state ── */
+    .arrived-message {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+      animation: arrivedPop 1s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .arrived-message.show { display: flex; }
+    @keyframes arrivedPop {
+      0%   { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .arrived-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 700;
+      color: var(--gold);
+      text-shadow: 0 0 60px rgba(212,168,67,0.6);
+    }
+    .arrived-sub {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: rgba(245,237,224,0.7);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeSlideDown {
+      0%   { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideUp {
+      0%   { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .countdown { gap: 0.6rem; }
+      .sep { display: none; }
+      .subheadline { margin-bottom: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sky"></div>
+<div class="stars" id="stars"></div>
+
+<!-- SVG Mountain silhouette -->
+<div class="mountains">
+  <svg viewBox="0 0 1440 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="mtGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#2a1206"/>
+        <stop offset="100%" stop-color="#0d0603"/>
+      </linearGradient>
+      <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f5ede0" stop-opacity="0.9"/>
+        <stop offset="60%" stop-color="#d4a843" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#2a1206" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <!-- Background far mountains -->
+    <path d="M0 400 L0 260 L60 200 L130 255 L220 140 L310 220 L390 100 L480 180 L540 130 L600 160 L680 80 L760 150 L840 90 L920 160 L990 120 L1060 170 L1140 100 L1220 160 L1300 200 L1380 150 L1440 200 L1440 400 Z" 
+          fill="#1f0e06" opacity="0.9"/>
+    <!-- Mid mountains -->
+    <path d="M0 400 L0 320 L80 280 L160 300 L260 210 L340 260 L440 170 L520 230 L590 175 L650 210 L720 155 L800 200 L870 165 L940 205 L1010 180 L1090 215 L1160 185 L1230 220 L1320 255 L1380 230 L1440 260 L1440 400 Z" 
+          fill="url(#mtGrad)"/>
+    <!-- Foreground hills -->
+    <path d="M0 400 L0 360 L120 330 L240 345 L360 310 L480 335 L600 320 L720 340 L840 315 L960 338 L1080 322 L1200 342 L1320 330 L1440 345 L1440 400 Z" 
+          fill="#0d0603"/>
+    <!-- Snow caps - Everest region style -->
+    <path d="M380 100 L360 125 L390 118 L420 130 L440 170 L400 155 L370 165 L350 140 Z" fill="url(#snowGrad)" opacity="0.5"/>
+    <path d="M680 80 L660 110 L690 105 L720 115 L740 150 L700 140 L670 148 L650 125 Z" fill="url(#snowGrad)" opacity="0.5"/>
+    <path d="M840 90 L822 118 L848 112 L870 120 L890 160 L855 150 L825 157 L808 132 Z" fill="url(#snowGrad)" opacity="0.45"/>
+  </svg>
+</div>
+
+<div class="horizon-glow"></div>
+<div class="particles" id="particles"></div>
+
+<div class="content">
+  <!-- Main countdown section -->
+  <div id="countdown-section">
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-line right"></div>
+    </div>
+
+    <p class="eyebrow">Aditya is coming home</p>
+    <h1 class="headline"><em>Aditya</em> is Coming Home</h1>
+    <p class="subheadline">from the United Kingdom, back to where it all began</p>
+
+    <div class="countdown" id="countdown">
+      <div class="unit">
+        <div class="unit-value" id="days">--</div>
+        <div class="unit-label">Days</div>
+      </div>
+      <div class="sep">·</div>
+      <div class="unit">
+        <div class="unit-value" id="hours">--</div>
+        <div class="unit-label">Hours</div>
+      </div>
+      <div class="sep">·</div>
+      <div class="unit">
+        <div class="unit-value" id="minutes">--</div>
+        <div class="unit-label">Minutes</div>
+      </div>
+      <div class="sep">·</div>
+      <div class="unit">
+        <div class="unit-value" id="seconds">--</div>
+        <div class="unit-label">Seconds</div>
+      </div>
+    </div>
+
+    <div class="date-chip">
+      <span class="date-chip-icon">✈</span>
+      <span class="date-chip-text">September 15, 2026 — Tribhuvan International Airport</span>
+    </div>
+
+    <p class="footer-note">आदित्य, गृहआगमनको स्वागत छ &nbsp;·&nbsp; Welcome home, Aditya</p>
+  </div>
+
+  <!-- Arrived state -->
+  <div class="arrived-message" id="arrived">
+    <div class="arrived-title">🏔 Welcome Home, Aditya!</div>
+    <p class="arrived-sub">Nepal has been waiting for you.<br/>आदित्य, गृहआगमनको हार्दिक स्वागत छ।</p>
+  </div>
+</div>
+
+<script>
+  // ── Stars ──────────────────────────────────────────────
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 180; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*65}%;
+      --d:${2+Math.random()*4}s;
+      --delay:${Math.random()*6}s;
+      --op:${0.3+Math.random()*0.6};
+      width:${Math.random()<0.15?3:1.5}px;
+      height:${Math.random()<0.15?3:1.5}px;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  // ── Particles (floating embers) ────────────────────────
+  const particlesEl = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left:${10+Math.random()*80}%;
+      bottom:${5+Math.random()*20}%;
+      --pd:${6+Math.random()*10}s;
+      --pdelay:${Math.random()*12}s;
+      width:${1+Math.random()*2}px;
+      height:${1+Math.random()*2}px;
+    `;
+    particlesEl.appendChild(p);
+  }
+
+  // ── Countdown ──────────────────────────────────────────
+  const target = new Date('2026-09-15T00:00:00+05:45'); // Nepal time
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const now  = new Date();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      document.getElementById('countdown-section').style.display = 'none';
+      document.getElementById('arrived').classList.add('show');
+      return;
+    }
+
+    const days    = Math.floor(diff / 864e5);
+    const hours   = Math.floor((diff % 864e5) / 36e5);
+    const minutes = Math.floor((diff % 36e5) / 6e4);
+    const seconds = Math.floor((diff % 6e4) / 1e3);
+
+    document.getElementById('days').textContent    = days;
+    document.getElementById('hours').textContent   = pad(hours);
+    document.getElementById('minutes').textContent = pad(minutes);
+    document.getElementById('seconds').textContent = pad(seconds);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
